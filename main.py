@@ -76,8 +76,12 @@ class Game:
             defense=p_stats_data["defense"],
             dodge=p_stats_data["dodge"]
         )
-        spawn_x = self.game_map.spawn_point["x"]
-        spawn_y = self.game_map.spawn_point["y"]
+        
+        # CORRECTION : Sécurisation de l'accès au spawn_point avec un fallback (0, 0)
+        spawn_point = getattr(self.game_map, "spawn_point", {"x": 0, "y": 0})
+        spawn_x = spawn_point.get("x", 0)
+        spawn_y = spawn_point.get("y", 0)
+        
         self.player = Player(p_data.get("name", "Héros"), player_stats, spawn_x, spawn_y)
         
         # UI
@@ -89,7 +93,6 @@ class Game:
 
     def start_battle(self):
         # Choisir un ennemi au hasard parmi ceux disponibles dans cars.json
-        # On pourrait aussi filtrer par rapport à "available_enemies" dans map1.json
         enemy_list = list(self.car_data.get("enemies", {}).keys())
         enemy_id = random.choice(enemy_list)
         e_data = self.car_data["enemies"][enemy_id]
@@ -163,8 +166,12 @@ class Game:
                         else:
                             # Roguelite: Retour au début
                             self.player.stats.current_hp = self.player.get_active_stats()["max_hp"]
-                            self.player.grid_x = self.game_map.spawn_point["x"]
-                            self.player.grid_y = self.game_map.spawn_point["y"]
+                            
+                            # CORRECTION : Sécurisation ici aussi pour la réapparition du joueur
+                            spawn_point = getattr(self.game_map, "spawn_point", {"x": 0, "y": 0})
+                            self.player.grid_x = spawn_point.get("x", 0)
+                            self.player.grid_y = spawn_point.get("y", 0)
+                            
                             self.player.pixel_x = float(self.player.grid_x * TILE_SIZE)
                             self.player.pixel_y = float(self.player.grid_y * TILE_SIZE)
                             self.player.target_x = self.player.grid_x * TILE_SIZE
@@ -196,7 +203,9 @@ class Game:
             self.game_map.draw(self.screen)
             self.player.draw(self.screen)
             stats = self.player.get_active_stats()
-            draw_text(self.screen, f"Carte: {self.game_map.map_name}", 18, 10, 10)
+            # Ajout d'une sécurité si map_name n'existe pas lors du mode fallback
+            map_name = getattr(self.game_map, "map_name", "Générée automatiquement")
+            draw_text(self.screen, f"Carte: {map_name}", 18, 10, 10)
             draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | Potions: {self.player.potions}", 20, 10, 35)
             draw_text(self.screen, "I: Inventaire | E: Équipement | S: Sauvegarder", 18, 10, SCREEN_HEIGHT - 25)
         elif self.state == GameState.BATTLE:
