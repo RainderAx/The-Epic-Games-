@@ -11,17 +11,23 @@ class Tile:
         self.type = tile_type
         self.rect = pygame.Rect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE)
 
-    def draw(self, surface, camera_offset=(0, 0)):
+    def draw(self, surface, texture, camera_offset=(0, 0)):
+        """Dessine la texture ou une couleur de secours si l'image est absente."""
         draw_rect = self.rect.copy()
         draw_rect.x -= camera_offset[0]
         draw_rect.y -= camera_offset[1]
         
-        color = (200, 200, 200) # Gris par défaut (Route)
-        if self.type == TileType.GRASS:
-            color = (34, 139, 34) # Vert (Herbe)
-        elif self.type == TileType.OBSTACLE:
-            color = (100, 100, 100) # Gris foncé (Obstacle)
-            
-        pygame.draw.rect(surface, color, draw_rect)
-        # Bordure pour mieux voir les cases
-        pygame.draw.rect(surface, (50, 50, 50), draw_rect, 1)
+        if texture:
+            # Si l'image existe et est redimensionnée, on l'affiche
+            surface.blit(texture, draw_rect.topleft)
+        else:
+            # Rendu de secours (Fallback) si le sprite .png n'a pas pu être chargé
+            color = (200, 200, 200) # Gris par défaut (Route)
+            if self.type == TileType.GRASS:
+                color = (34, 139, 34) # Vert (Herbe)
+            elif self.type == TileType.OBSTACLE:
+                color = (100, 100, 100) # Gris foncé (Obstacle)
+                
+            pygame.draw.rect(surface, color, draw_rect)
+            # Bordure légère de secours
+            pygame.draw.rect(surface, (50, 50, 50), draw_rect, 1)
