@@ -203,9 +203,7 @@ class Game:
             self.game_map.draw(self.screen)
             self.player.draw(self.screen)
             stats = self.player.get_active_stats()
-            # Ajout d'une sécurité si map_name n'existe pas lors du mode fallback
-            map_name = getattr(self.game_map, "map_name", "Générée automatiquement")
-            draw_text(self.screen, f"Carte: {map_name}", 18, 10, 10)
+        
             draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | Potions: {self.player.potions}", 20, 10, 35)
             draw_text(self.screen, "I: Inventaire | E: Équipement | S: Sauvegarder", 18, 10, SCREEN_HEIGHT - 25)
         elif self.state == GameState.BATTLE:

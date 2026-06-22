@@ -1,0 +1,14 @@
+{
+    "name": "Ch\u00e2ssis H\u00e9ro\u00efque",
+    "potions": 0,
+    "equipments": {
+        "engine": null,
+        "tires": null,
+        "driver": null,
+        "turbo": null,
+        "body": null,
+        "brakes": null,
+        "suspension": null
+    },
+    "inventory": []
+}
