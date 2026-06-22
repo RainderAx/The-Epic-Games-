@@ -1,0 +1,43 @@
+{
+  "player": {
+    "name": "Châssis Héroïque",
+    "base_stats": {
+      "hp": 60,
+      "attack": 12,
+      "defense": 5,
+      "dodge": 5
+    }
+  },
+  "enemies": {
+    "rusty_sedan": {
+      "name": "Berline Rouillée",
+      "base_stats": {
+        "hp": 30,
+        "attack": 8,
+        "defense": 2,
+        "dodge": 3
+      },
+      "loot_table": ["v8_engine", "sport_tires"]
+    },
+    "mad_truck": {
+      "name": "Camion Enragé",
+      "base_stats": {
+        "hp": 55,
+        "attack": 15,
+        "defense": 6,
+        "dodge": 1
+      },
+      "loot_table": ["comp_turbo"]
+    },
+    "drift_king": {
+      "name": "Reine du Drift",
+      "base_stats": {
+        "hp": 40,
+        "attack": 10,
+        "defense": 3,
+        "dodge": 12
+      },
+      "loot_table": ["sport_tires"]
+    }
+  }
+}
