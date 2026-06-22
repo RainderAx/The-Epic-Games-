@@ -1,0 +1,11 @@
+# Constantes globales du jeu
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+FPS = 60
+TILE_SIZE = 32
+
+# Couleurs (RGB)
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRASS_GREEN = (34, 139, 34)
+ROAD_GRAY = (105, 105, 105)

@@ -1,0 +1,38 @@
+{
+    "engines": {
+        "v8_engine": {
+            "name": "Moteur V8",
+            "slot": "engine",
+            "bonuses": {
+                "hp": 5,
+                "attack": 10,
+                "defense": 0,
+                "dodge": 0
+            }
+        }
+    },
+    "turbos": {
+        "comp_turbo": {
+            "name": "Turbo Compétition",
+            "slot": "turbo",
+            "bonuses": {
+                "hp": 0,
+                "attack": 15,
+                "defense": -3,
+                "dodge": 0
+            }
+        }
+    },
+    "tires": {
+        "sport_tires": {
+            "name": "Pneus Sport",
+            "slot": "tires",
+            "bonuses": {
+                "hp": 0,
+                "attack": 0,
+                "defense": 0,
+                "dodge": 8
+            }
+        }
+    }
+}
