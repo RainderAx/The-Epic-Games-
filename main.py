@@ -8,7 +8,7 @@ from utils.helpers import load_json, draw_text
 from entities.player import Player
 from entities.ennemy import Ennemy
 from entities.stats import Stats
-from equiment.equipment import Equipment
+from equipment.equipment import Equipment
 from world.map import Map
 from world.collision import CollisionSystem
 from world.grass import GrassLogic

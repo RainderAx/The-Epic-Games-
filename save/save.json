@@ -1,6 +1,6 @@
 {
     "name": "Ch\u00e2ssis H\u00e9ro\u00efque",
-    "potions": 2,
+    "potions": 3,
     "equipments": {
         "engine": "v8_engine",
         "tires": "sport_tires",
@@ -13,6 +13,11 @@
     "inventory": [
         "sport_tires",
         "sport_tires",
-        "comp_turbo"
+        "comp_turbo",
+        "comp_turbo",
+        "sport_tires",
+        "sport_tires",
+        "v8_engine",
+        "v8_engine"
     ]
 }
