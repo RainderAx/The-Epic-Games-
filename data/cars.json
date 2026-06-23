@@ -5,8 +5,8 @@
     "base_stats": {
       "hp": 60,
       "attack": 12,
-      "defense": 5,
-      "dodge": 5
+      "defense": 20,
+      "dodge": 0
     }
   },
   "enemies": {
@@ -19,7 +19,10 @@
         "defense": 2,
         "dodge": 3
       },
-      "loot_table": ["v8_engine", "sport_tires"]
+      "loot_table": [
+        "v8_engine",
+        "sport_tires"
+      ]
     },
     "mad_truck": {
       "name": "Camion Enragé",
@@ -30,7 +33,9 @@
         "defense": 6,
         "dodge": 1
       },
-      "loot_table": ["comp_turbo"]
+      "loot_table": [
+        "comp_turbo"
+      ]
     },
     "drift_king": {
       "name": "Reine du Drift",
@@ -41,7 +46,40 @@
         "defense": 3,
         "dodge": 12
       },
-      "loot_table": ["sport_tires"]
+      "loot_table": [
+        "sport_tires"
+      ]
+    },
+    "camionette": {
+      "name": "Camionnette",
+      "sprite": "assets/ennemies/camionnette.png",
+      "base_stats": {
+        "hp": 35,
+        "attack": 10,
+        "defense": 5,
+        "dodge": 5
+      },
+      "loot_table": [
+        "Pedofile",
+        "Carroserie Blindée"
+      ]
+    },
+    "redbull": {
+      "name": "Red Bull",
+      "sprite": "assets/ennemies/redbull.png",
+      "base_stats": {
+        "hp": 150,
+        "attack": 30,
+        "defense": 5,
+        "dodge": 10
+      },
+      "loot_table": [
+        "Max Verstappen",
+        "Freins à Disque",
+        "Suspension Sport",
+        "Super Potion de Réparation",
+        "Mini Potion de Réparation"
+      ]
     }
   }
 }

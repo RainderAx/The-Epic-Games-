@@ -34,5 +34,93 @@
                 "dodge": 8
             }
         }
+    },
+    "drivers": {
+        "pdfile": {
+            "name": "Pedofile",
+            "slot": "driver",
+            "bonuses": {
+                "hp": 10,
+                "attack": 0,
+                "defense": 0,
+                "dodge": 10
+            }
+        },
+        "max_verstappen": {
+            "name": "Max Verstappen",
+            "slot": "driver",
+            "bonuses": {
+                "hp": 0,
+                "attack": 5,
+                "defense": 0,
+                "dodge": 0
+            }
+        }
+    },
+    "body": {
+        "lightweight_body": {
+            "name": "Carrosserie Légère",
+            "slot": "body",
+            "bonuses": {
+                "hp": -5,
+                "attack": 0,
+                "defense": -10,
+                "dodge": 20
+            }
+        },
+        "armored_body": {
+            "name": "Carrosserie Blindée",
+            "slot": "body",
+            "bonuses": {
+                "hp": 20,
+                "attack": 0,
+                "defense": 10,
+                "dodge": -5
+            }
+        }
+    },
+    "brakes": {
+        "disc_brakes": {
+            "name": "Freins à Disque",
+            "slot": "brakes",
+            "bonuses": {
+                "hp": 0,
+                "attack": -5,
+                "defense": 5,
+                "dodge": 0
+            }
+        },
+        "drum_brakes": {
+            "name": "Freins à Tambour",
+            "slot": "brakes",
+            "bonuses": {
+                "hp": 0,
+                "attack": 5,
+                "defense": -5,
+                "dodge": 0
+            }
+        }
+    },
+    "suspension": {
+        "sport_suspension": {
+            "name": "Suspension Sport",
+            "slot": "suspension",
+            "bonuses": {
+                "hp": 0,
+                "attack": 0,
+                "defense": 0,
+                "dodge": 10
+            }
+        },
+        "offroad_suspension": {
+            "name": "Suspension Tout-Terrain",
+            "slot": "suspension",
+            "bonuses": {
+                "hp": 0,
+                "attack": 0,
+                "defense": 5,
+                "dodge": -5
+            }
+        }
     }
 }

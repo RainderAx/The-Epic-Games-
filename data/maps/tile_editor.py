@@ -33,9 +33,8 @@ class TileEditor:
         
         self.current_type = 0
         self.spawn_point = {"x": 1, "y": 1}
-        self.map_name = "map1" # Nom du fichier par défaut
-        
-        # Initialisation de la grille vide (Remplie de routes '0')
+        self.map_name = "map" 
+
         self.grid = [[0 for _ in range(MAP_WIDTH)] for _ in range(MAP_HEIGHT)]
         
         self.load_textures()
