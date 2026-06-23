@@ -42,9 +42,7 @@ class Game:
                     self.equipment_data.update(category)
         
         # 2. Chargement des voitures (joueur et ennemis)
-        car_path = '/home/ubuntu/upload/cars.json'
-        if not os.path.exists(car_path):
-            car_path = 'data/cars.json'
+        car_path = 'data/cars.json'
         self.car_data = load_json(car_path)
 
         # Fallbacks si fichiers vides ou manquants
@@ -56,8 +54,8 @@ class Game:
         
         if not self.car_data:
             self.car_data = {
-                "player": {"name": "Voiture Héros", "base_stats": {"hp": 50, "attack": 10, "defense": 5, "dodge": 5}},
-                "enemies": {"rusty_sedan": {"name": "Berline Rouillée", "base_stats": {"hp": 30, "attack": 8, "defense": 2, "dodge": 3}}}
+                "player": {"name": "Voiture Héros", "sprite": "assets/cars/McQueenBack.png", "base_stats": {"hp": 50, "attack": 10, "defense": 5, "dodge": 5}},
+                "enemies": {"rusty_sedan": {"name": "Berline Rouillée", "sprite": "assets/ennemies/Berline_Rouillee.png", "base_stats": {"hp": 30, "attack": 8, "defense": 2, "dodge": 3}}}
             }
 
     def init_game_objects(self):
@@ -77,12 +75,11 @@ class Game:
             dodge=p_stats_data["dodge"]
         )
         
-        # CORRECTION : Sécurisation de l'accès au spawn_point avec un fallback (0, 0)
         spawn_point = getattr(self.game_map, "spawn_point", {"x": 0, "y": 0})
         spawn_x = spawn_point.get("x", 0)
         spawn_y = spawn_point.get("y", 0)
         
-        self.player = Player(p_data.get("name", "Héros"), player_stats, spawn_x, spawn_y)
+        self.player = Player(p_data.get("name", "Héros"), player_stats, spawn_x, spawn_y, sprite_path=p_data.get("sprite"))
         
         # UI
         self.menu = Menu(self.screen)
@@ -105,7 +102,7 @@ class Game:
             dodge=e_stats_data["dodge"]
         )
         
-        enemy = Ennemy(e_data["name"], enemy_stats, loot_table=e_data.get("loot_table", []))
+        enemy = Ennemy(e_data["name"], enemy_stats, sprite_path=e_data.get("sprite"), loot_table=e_data.get("loot_table", []))
         self.battle_manager = BattleManager(self.player, enemy)
         self.battle_ui = BattleUI(self.screen, self.battle_manager)
         self.state = GameState.BATTLE
@@ -166,12 +163,9 @@ class Game:
                         else:
                             # Roguelite: Retour au début
                             self.player.stats.current_hp = self.player.get_active_stats()["max_hp"]
-                            
-                            # CORRECTION : Sécurisation ici aussi pour la réapparition du joueur
                             spawn_point = getattr(self.game_map, "spawn_point", {"x": 0, "y": 0})
                             self.player.grid_x = spawn_point.get("x", 0)
                             self.player.grid_y = spawn_point.get("y", 0)
-                            
                             self.player.pixel_x = float(self.player.grid_x * TILE_SIZE)
                             self.player.pixel_y = float(self.player.grid_y * TILE_SIZE)
                             self.player.target_x = self.player.grid_x * TILE_SIZE
@@ -190,9 +184,13 @@ class Game:
         if self.state == GameState.EXPLORATION:
             self.player.update()
         elif self.state == GameState.BATTLE:
-            if self.battle_manager.turn == "enemy" and not self.battle_manager.is_finished:
+            if self.bm_turn == "enemy" and not self.battle_manager.is_finished:
                 pygame.time.delay(500)
                 self.battle_manager.enemy_turn()
+
+    @property
+    def bm_turn(self):
+        return self.battle_manager.turn if hasattr(self, 'battle_manager') else None
 
     def draw(self):
         self.screen.fill(WHITE)
@@ -203,7 +201,6 @@ class Game:
             self.game_map.draw(self.screen)
             self.player.draw(self.screen)
             stats = self.player.get_active_stats()
-        
             draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | Potions: {self.player.potions}", 20, 10, 35)
             draw_text(self.screen, "I: Inventaire | E: Équipement | S: Sauvegarder", 18, 10, SCREEN_HEIGHT - 25)
         elif self.state == GameState.BATTLE:

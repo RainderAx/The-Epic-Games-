@@ -1,6 +1,7 @@
 {
   "player": {
     "name": "Châssis Héroïque",
+    "sprite": "assets/cars/McQueenBack.png",
     "base_stats": {
       "hp": 60,
       "attack": 12,
@@ -11,6 +12,7 @@
   "enemies": {
     "rusty_sedan": {
       "name": "Berline Rouillée",
+      "sprite": "assets/ennemies/Berline_Rouillee.png",
       "base_stats": {
         "hp": 30,
         "attack": 8,
@@ -21,6 +23,7 @@
     },
     "mad_truck": {
       "name": "Camion Enragé",
+      "sprite": "assets/ennemies/Camion_Enrage.png",
       "base_stats": {
         "hp": 55,
         "attack": 15,
@@ -31,6 +34,7 @@
     },
     "drift_king": {
       "name": "Reine du Drift",
+      "sprite": "assets/ennemies/reine_du_drift.png",
       "base_stats": {
         "hp": 40,
         "attack": 10,

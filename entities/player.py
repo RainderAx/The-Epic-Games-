@@ -5,8 +5,8 @@ from utils.constants import TILE_SIZE
 class Player(Car):
     """Représente le joueur contrôlé sur la carte."""
     
-    def __init__(self, name, base_stats, x, y):
-        super().__init__(name, base_stats)
+    def __init__(self, name, base_stats, x, y, sprite_path=None):
+        super().__init__(name, base_stats, sprite_path)
         self.grid_x = x
         self.grid_y = y
         self.target_x = x * TILE_SIZE
@@ -50,7 +50,7 @@ class Player(Car):
                 self.moving = False
 
     def draw(self, surface, camera_offset=(0, 0)):
-        """Affiche le joueur (rectangle pour l'instant, sprite plus tard)."""
+        """Affiche le joueur."""
         rect = pygame.Rect(self.pixel_x - camera_offset[0], 
                            self.pixel_y - camera_offset[1], 
                            TILE_SIZE, TILE_SIZE)

@@ -4,9 +4,10 @@ from equipment.equipment import Equipment
 class Car:
     """Représente une voiture (Joueur ou Ennemi) avec ses stats et son équipement."""
     
-    def __init__(self, name: str, base_stats: Stats):
+    def __init__(self, name: str, base_stats: Stats, sprite_path: str = None):
         self.name = name
         self.stats = base_stats
+        self.sprite_path = sprite_path
         
         self.equipments = {
             "engine": None,
