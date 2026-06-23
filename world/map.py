@@ -14,6 +14,7 @@ class Map:
         self.map_name = "Carte Inconnue"
         self.encounter_rate = 0.1
         self.spawn_point = {"x": 0, "y": 0}
+        self.available_enemies = []
         
         # Centralisation et redimensionnement automatique des textures
         self.textures = {}
@@ -26,7 +27,8 @@ class Map:
         paths = {
             TileType.ROAD: "assets/tiles/road.png",
             TileType.GRASS: "assets/tiles/grass.png",
-            TileType.OBSTACLE: "assets/tiles/obstacle.png"
+            TileType.OBSTACLE: "assets/tiles/obstacle.png",
+            TileType.TELEPORT: "assets/tiles/teleportation.png"
         }
         
         for tile_type, path in paths.items():
@@ -65,12 +67,14 @@ class Map:
         self.height = data.get("height", self.height)
         self.encounter_rate = data.get("encounter_rate", 0.15)
         self.spawn_point = data.get("spawn_point", {"x": 0, "y": 0})
+        self.available_enemies = data.get("available_enemies", [])
         
         # Correspondance avec le format numérique du JSON
         type_map = {
             0: TileType.ROAD,
             1: TileType.GRASS,
-            2: TileType.OBSTACLE
+            2: TileType.OBSTACLE,
+            3: TileType.TELEPORT
         }
         
         grid = data.get("grid", [])
@@ -85,6 +89,13 @@ class Map:
                 row.append(Tile(x, y, tile_type))
             self.tiles.append(row)
         return True
+
+    def check_teleport(self, x, y):
+        """Vérifie si la case est un téléporteur."""
+        tile = self.get_tile(x, y)
+        if tile and tile.type == TileType.TELEPORT:
+            return True
+        return False
 
     def draw(self, surface, camera_offset=(0, 0)):
         """Dessine chaque case en lui passant sa texture correspondante."""

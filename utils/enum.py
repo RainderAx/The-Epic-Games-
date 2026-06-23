@@ -14,6 +14,7 @@ class TileType(Enum):
     GRASS = "grass"
     OBSTACLE = "obstacle"
     NPC = "npc"
+    TELEPORT = "teleport"
 
 class GameState(Enum):
     EXPLORATION = auto()

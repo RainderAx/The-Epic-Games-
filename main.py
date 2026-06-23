@@ -8,7 +8,7 @@ from utils.helpers import load_json, draw_text
 from entities.player import Player
 from entities.ennemy import Ennemy
 from entities.stats import Stats
-from equipment.equipment import Equipment
+from equiment.equipment import Equipment
 from world.map import Map
 from world.collision import CollisionSystem
 from world.grass import GrassLogic
@@ -28,6 +28,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.state = GameState.MENU
+        self.current_map_file = 'data/maps/map1.json'
 
         self.load_data()
         self.init_game_objects()
@@ -61,8 +62,7 @@ class Game:
     def init_game_objects(self):
         # Initialisation de la carte
         self.game_map = Map()
-        map_path = 'data/maps/map1.json'
-        if not self.game_map.load_from_file(map_path):
+        if not self.game_map.load_from_file(self.current_map_file):
             self.game_map.generate_empty_map()
 
         # Initialisation du joueur avec les données de cars.json
@@ -88,11 +88,31 @@ class Game:
         self.equipment_menu = EquipmentMenu(self.screen, self.player)
         self.save_manager = SaveManager()
 
+    def change_map(self, new_map_path):
+        """Gère la transition entre deux cartes."""
+        self.current_map_file = new_map_path
+        if self.game_map.load_from_file(new_map_path):
+            # Repositionner le joueur au nouveau spawn point
+            spawn_point = self.game_map.spawn_point
+            self.player.grid_x = spawn_point["x"]
+            self.player.grid_y = spawn_point["y"]
+            self.player.pixel_x = float(self.player.grid_x * TILE_SIZE)
+            self.player.pixel_y = float(self.player.grid_y * TILE_SIZE)
+            self.player.target_x = self.player.grid_x * TILE_SIZE
+            self.player.target_y = self.player.grid_y * TILE_SIZE
+            self.player.moving = False
+            print(f"Téléportation vers {self.game_map.map_name}")
+
     def start_battle(self):
-        # Choisir un ennemi au hasard parmi ceux disponibles dans cars.json
-        enemy_list = list(self.car_data.get("enemies", {}).keys())
-        enemy_id = random.choice(enemy_list)
-        e_data = self.car_data["enemies"][enemy_id]
+        # Choisir un ennemi au hasard parmi ceux disponibles sur la carte ou dans cars.json
+        available = self.game_map.available_enemies
+        if not available:
+            available = list(self.car_data.get("enemies", {}).keys())
+            
+        enemy_id = random.choice(available)
+        e_data = self.car_data["enemies"].get(enemy_id)
+        if not e_data: # Fallback
+            e_data = list(self.car_data["enemies"].values())[0]
         
         e_stats_data = e_data["base_stats"]
         enemy_stats = Stats(
@@ -136,10 +156,22 @@ class Game:
                     elif event.key == pygame.K_s: self.save_manager.save_game(self.player)
 
                     if (dx != 0 or dy != 0) and not self.player.moving:
-                        if CollisionSystem.can_move_to(self.player.grid_x + dx, self.player.grid_y + dy, self.game_map):
+                        new_x = self.player.grid_x + dx
+                        new_y = self.player.grid_y + dy
+                        
+                        if CollisionSystem.can_move_to(new_x, new_y, self.game_map):
                             self.player.move(dx, dy)
+                            
+                            # Vérifier téléportation
+                            if self.game_map.check_teleport(new_x, new_y):
+                                if "map1" in self.current_map_file:
+                                    self.change_map('data/maps/map3.json')
+                                elif "map3" in self.current_map_file:
+                                    self.change_map('data/maps/map1.json')
+                            
+                            # Vérifier rencontre
                             tile = self.game_map.get_tile(self.player.grid_x, self.player.grid_y)
-                            if tile.type == TileType.GRASS:
+                            if tile and tile.type == TileType.GRASS:
                                 if random.random() <= self.game_map.encounter_rate:
                                     self.start_battle()
 
@@ -161,11 +193,11 @@ class Game:
                             self.player.potions += LootSystem.generate_potion()
                             self.state = GameState.EXPLORATION
                         else:
-                            # Roguelite: Retour au début
+                            # Roguelite: Retour au début de la carte actuelle
                             self.player.stats.current_hp = self.player.get_active_stats()["max_hp"]
-                            spawn_point = getattr(self.game_map, "spawn_point", {"x": 0, "y": 0})
-                            self.player.grid_x = spawn_point.get("x", 0)
-                            self.player.grid_y = spawn_point.get("y", 0)
+                            spawn_point = self.game_map.spawn_point
+                            self.player.grid_x = spawn_point["x"]
+                            self.player.grid_y = spawn_point["y"]
                             self.player.pixel_x = float(self.player.grid_x * TILE_SIZE)
                             self.player.pixel_y = float(self.player.grid_y * TILE_SIZE)
                             self.player.target_x = self.player.grid_x * TILE_SIZE
@@ -201,6 +233,7 @@ class Game:
             self.game_map.draw(self.screen)
             self.player.draw(self.screen)
             stats = self.player.get_active_stats()
+            draw_text(self.screen, f"Carte: {self.game_map.map_name}", 18, 10, 10)
             draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | Potions: {self.player.potions}", 20, 10, 35)
             draw_text(self.screen, "I: Inventaire | E: Équipement | S: Sauvegarder", 18, 10, SCREEN_HEIGHT - 25)
         elif self.state == GameState.BATTLE:
