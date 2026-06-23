@@ -7,16 +7,16 @@
         "driver": null,
         "turbo": "comp_turbo",
         "body": null,
-        "brakes": null,
+        "brakes": "disc_brakes",
         "suspension": null
     },
     "inventory": [
         "sport_tires",
         "sport_tires",
-        "comp_turbo",
-        "comp_turbo",
         "sport_tires",
         "sport_tires",
+        "comp_turbo",
+        "comp_turbo",
         "v8_engine",
         "v8_engine"
     ]

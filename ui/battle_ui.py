@@ -16,81 +16,89 @@ class BattleUI:
         self.background = None
         bg_path = "assets/ui/battle_background.png"
         if os.path.exists(bg_path):
-            self.background = pygame.image.load(bg_path)
-            self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            try:
+                self.background = pygame.image.load(bg_path)
+                self.background = pygame.transform.scale(self.background, (SCREEN_WIDTH, SCREEN_HEIGHT))
+            except pygame.error:
+                self.background = None
             
-        # Chargement des sprites des combattants
-        self.player_sprite = self.load_sprite(self.bm.player.sprite_path, (200, 200))
-        self.enemy_sprite = self.load_sprite(self.bm.enemy.sprite_path, (200, 200))
+        # Chargement des sprites des combattants (200x200 pixels)
+        # Utilise .sprite_path ou l'attribut de l'entité contenant le chemin de l'image
+        self.player_sprite = self.load_sprite(getattr(self.bm.player, 'sprite_path', None), (200, 200))
+        self.enemy_sprite = self.load_sprite(getattr(self.bm.enemy, 'sprite_path', None), (200, 200))
 
     def load_sprite(self, path, size):
+        """Tente de charger une image. En cas d'erreur de format ou fichier introuvable,"""
+        """génère un carré de couleur unie pour éviter le crash du jeu."""
         if path and os.path.exists(path):
-            sprite = pygame.image.load(path).convert_alpha()
-            return pygame.transform.scale(sprite, size)
-        return None
+            try:
+                sprite = pygame.image.load(path).convert_alpha()
+                return pygame.transform.scale(sprite, size)
+            except (pygame.error, TypeError) as e:
+                print(f"⚠️ Erreur de format ou chargement sur l'image {path} : {e}")
+        
+        # Fallback : Création d'une surface de secours unie
+        fallback_surface = pygame.Surface(size)
+        fallback_surface.fill((200, 50, 50)) # Rouge par défaut
+        return fallback_surface
 
     def handle_event(self, event):
-        if self.bm.turn == "player" and not self.bm.is_finished:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
-                    self.selected_index = (self.selected_index - 1) % len(self.options)
-                elif event.key == pygame.K_RIGHT:
-                    self.selected_index = (self.selected_index + 1) % len(self.options)
-                elif event.key == pygame.K_RETURN:
-                    return self.options[self.selected_index]
-        return None
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                self.selected_index = (self.selected_index - 1) % len(self.options)
+            elif event.key == pygame.K_RIGHT:
+                self.selected_index = (self.selected_index + 1) % len(self.options)
+            elif event.key == pygame.K_RETURN:
+                if self.selected_index == 0:
+                    self.bm.player_attack()
+                elif self.selected_index == 1:
+                    self.bm.player_use_potion()
+                elif self.selected_index == 2:
+                    # Logique de fuite (à lier avec ton système si présent)
+                    self.bm.battle_log.append("Vous tentez de fuir !")
 
     def draw(self):
-        # Fond de combat
+        # 1. Rendu du fond de combat
         if self.background:
             self.screen.blit(self.background, (0, 0))
         else:
-            self.screen.fill((200, 200, 255))
-        
+            self.screen.fill((240, 240, 240))
+            
+        # 2. Rendu des sprites des voitures
         if self.player_sprite:
-            self.screen.blit(self.player_sprite, (50, 200))
-        else:
-            pygame.draw.rect(self.screen, (0, 0, 255), (50, 200, 150, 100))
+            # Joueur positionné en bas à gauche
+            self.screen.blit(self.player_sprite, (80, SCREEN_HEIGHT - 320))
             
         if self.enemy_sprite:
-            self.screen.blit(self.enemy_sprite, (400, 50))
-        else:
-            pygame.draw.rect(self.screen, (255, 0, 0), (400, 50, 150, 100))
-
-        pygame.draw.rect(self.screen, (240, 240, 240), (400, 280, 220, 100), border_radius=10)
-        pygame.draw.rect(self.screen, BLACK, (400, 280, 220, 100), 2, border_radius=10)
+            # Ennemi positionné en haut à droite
+            self.screen.blit(self.enemy_sprite, (SCREEN_WIDTH - 280, 50))
+            
+        # 3. Rendu des barres de vie / Textes de statut
         p_stats = self.bm.player.get_active_stats()
-        draw_text(self.screen, f"{self.bm.player.name}", 20, 415, 290, color=BLACK)
-        draw_text(self.screen, f"HP: {self.bm.player.stats.current_hp}/{p_stats['max_hp']}", 18, 415, 320, color=BLACK)
+        draw_text(self.screen, f"{self.bm.player.name}", 20, 50, SCREEN_HEIGHT - 360, color=BLACK)
+        draw_text(self.screen, f"HP: {self.bm.player.stats.current_hp}/{p_stats['max_hp']}", 18, 50, SCREEN_HEIGHT - 335, color=BLACK)
         
-        # Panneau de stats ennemi (en haut à gauche)
-        pygame.draw.rect(self.screen, (240, 240, 240), (20, 20, 220, 100), border_radius=10)
-        pygame.draw.rect(self.screen, BLACK, (20, 20, 220, 100), 2, border_radius=10)
         e_stats = self.bm.enemy.get_active_stats()
-        draw_text(self.screen, f"{self.bm.enemy.name}", 20, 35, 30, color=BLACK)
-        draw_text(self.screen, f"HP: {self.bm.enemy.stats.current_hp}/{e_stats['max_hp']}", 18, 35, 60, color=BLACK)
+        draw_text(self.screen, f"{self.bm.enemy.name}", 20, SCREEN_WIDTH - 250, 260, color=BLACK)
+        draw_text(self.screen, f"HP: {self.bm.enemy.stats.current_hp}/{e_stats['max_hp']}", 18, SCREEN_WIDTH - 250, 285, color=BLACK)
         
-        # Log de combat (au milieu)
-        y_offset = 490
+        # 4. Menu d'actions (Placé au-dessus du journal)
+        # Rectangle de fond commençant à Y=380
+        pygame.draw.rect(self.screen, (240, 240, 240), (0, 380, SCREEN_WIDTH, 100))
+        pygame.draw.line(self.screen, BLACK, (0, 380), (SCREEN_WIDTH, 380), 2)
+        
+        # Dessin des boutons du menu d'action
+        for i, option in enumerate(self.options):
+            x_pos = 100 + i * 200
+            y_pos = 420
+            color = (255, 0, 0) if i == self.selected_index else BLACK
+            draw_text(self.screen, option, 22, x_pos, y_pos, color=color)
+            
+        # 5. Log de combat (Déplacé tout en bas, sous le menu d'actions)
+        y_offset = 495
         for msg in self.bm.battle_log[-3:]:
             text_surface = pygame.Surface((SCREEN_WIDTH - 100, 30), pygame.SRCALPHA)
             text_surface.fill((255, 255, 255, 180))
             self.screen.blit(text_surface, (50, y_offset - 5))
             draw_text(self.screen, msg, 18, SCREEN_WIDTH // 2, y_offset, center=True, color=BLACK)
             y_offset += 35
-            
-        # Menu d'actions (en bas)
-        pygame.draw.rect(self.screen, (240, 240, 240), (0, 380, SCREEN_WIDTH, 100))
-        pygame.draw.line(self.screen, BLACK, (0, 380), (SCREEN_WIDTH, 380), 2)
-
-        
-        
-        if not self.bm.is_finished:
-            for i, option in enumerate(self.options):
-                color = (255, 0, 0) if i == self.selected_index else BLACK
-                # Petit indicateur pour la sélection
-                if i == self.selected_index:
-                    draw_text(self.screen, ">", 24, 80 + i * 200, 420, color=color)
-                draw_text(self.screen, option, 24, 100 + i * 200, 420, color=color)
-        else:
-            draw_text(self.screen, "Appuyez sur Entrée pour continuer", 24, SCREEN_WIDTH // 2, 420, center=True, color=BLACK)

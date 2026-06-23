@@ -165,9 +165,9 @@ class Game:
                             # Vérifier téléportation
                             if self.game_map.check_teleport(new_x, new_y):
                                 if "map1" in self.current_map_file:
+                                    self.change_map('data/maps/map2.json')
+                                elif "map2" in self.current_map_file:
                                     self.change_map('data/maps/map3.json')
-                                elif "map3" in self.current_map_file:
-                                    self.change_map('data/maps/map1.json')
                             
                             # Vérifier rencontre
                             tile = self.game_map.get_tile(self.player.grid_x, self.player.grid_y)
