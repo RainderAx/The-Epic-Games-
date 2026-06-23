@@ -47,21 +47,16 @@ class BattleUI:
         else:
             self.screen.fill((200, 200, 255))
         
-        # Affichage des sprites
-        # Le joueur est en bas à gauche (vue de dos/côté)
         if self.player_sprite:
             self.screen.blit(self.player_sprite, (50, 200))
         else:
             pygame.draw.rect(self.screen, (0, 0, 255), (50, 200, 150, 100))
             
-        # L'ennemi est en haut à droite
         if self.enemy_sprite:
             self.screen.blit(self.enemy_sprite, (400, 50))
         else:
             pygame.draw.rect(self.screen, (255, 0, 0), (400, 50, 150, 100))
 
-        # Interface (Stats et Log)
-        # Panneau de stats joueur (en bas à droite)
         pygame.draw.rect(self.screen, (240, 240, 240), (400, 280, 220, 100), border_radius=10)
         pygame.draw.rect(self.screen, BLACK, (400, 280, 220, 100), 2, border_radius=10)
         p_stats = self.bm.player.get_active_stats()
@@ -76,9 +71,8 @@ class BattleUI:
         draw_text(self.screen, f"HP: {self.bm.enemy.stats.current_hp}/{e_stats['max_hp']}", 18, 35, 60, color=BLACK)
         
         # Log de combat (au milieu)
-        y_offset = 150
+        y_offset = 490
         for msg in self.bm.battle_log[-3:]:
-            # Petit fond semi-transparent pour le texte
             text_surface = pygame.Surface((SCREEN_WIDTH - 100, 30), pygame.SRCALPHA)
             text_surface.fill((255, 255, 255, 180))
             self.screen.blit(text_surface, (50, y_offset - 5))
@@ -88,6 +82,8 @@ class BattleUI:
         # Menu d'actions (en bas)
         pygame.draw.rect(self.screen, (240, 240, 240), (0, 380, SCREEN_WIDTH, 100))
         pygame.draw.line(self.screen, BLACK, (0, 380), (SCREEN_WIDTH, 380), 2)
+
+        
         
         if not self.bm.is_finished:
             for i, option in enumerate(self.options):
