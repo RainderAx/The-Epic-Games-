@@ -102,3 +102,5 @@ class BattleUI:
             self.screen.blit(text_surface, (50, y_offset - 5))
             draw_text(self.screen, msg, 18, SCREEN_WIDTH // 2, y_offset, center=True, color=BLACK)
             y_offset += 35
+
+    

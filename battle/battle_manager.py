@@ -53,11 +53,12 @@ class BattleManager:
             self.turn = "player"
 
     def check_battle_status(self):
+        """Vérifie si l'un des deux combattants a perdu tous ses PV."""
         if self.enemy.is_destroyed():
             self.is_finished = True
             self.winner = "player"
-            self.battle_log.append(f"{self.enemy.name} est K.O. ! Victoire !")
+            self.battle_log.append(f"🏆 Victoire ! {self.enemy.name} est K.O. !")
         elif self.player.is_destroyed():
             self.is_finished = True
             self.winner = "enemy"
-            self.battle_log.append(f"{self.player.name} est K.O. ! Défaite...")
+            self.battle_log.append("❌ Défaite ! Votre véhicule est détruit...")
