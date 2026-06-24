@@ -1,0 +1,152 @@
+{
+    "enemies": {
+        "rusty_sedan": {
+            "name": "Berline Rouillée",
+            "base_stats": {
+                "hp": 30,
+                "attack": 25,
+                "defense": 10,
+                "dodge": 3
+            },
+            "loot_table": [
+                "v8_engine",
+                "sport_tires"
+            ]
+        },
+        "mad_truck": {
+            "name": "Camion Enragé",
+            "base_stats": {
+                "hp": 55,
+                "attack": 25,
+                "defense": 10,
+                "dodge": 1
+            },
+            "loot_table": [
+                "comp_turbo"
+            ]
+        },
+        "drift_king": {
+            "name": "Reine du Drift",
+            "base_stats": {
+                "hp": 40,
+                "attack": 30,
+                "defense": 3,
+                "dodge": 12
+            },
+            "loot_table": [
+                "sport_tires"
+            ]
+        },
+        "camionette": {
+            "name": "Camionnette",
+            "base_stats": {
+                "hp": 35,
+                "attack": 10,
+                "defense": 31,
+                "dodge": 5
+            },
+            "loot_table": [
+                "Pedofile",
+                "Carroserie Blindée"
+            ]
+        },
+        "redbull": {
+            "name": "Red Bull",
+            "base_stats": {
+                "hp": 150,
+                "attack": 35,
+                "defense": 15,
+                "dodge": 10
+            },
+            "loot_table": [
+                "Max Verstappen",
+                "Freins à Disque",
+                "Suspension Sport",
+                "Super Potion de Réparation",
+                "Mini Potion de Réparation"
+            ]
+        },
+        "desert_buggy": {
+            "name": "Buggy du Désert",
+            "base_stats": {
+                "hp": 38,
+                "attack": 11,
+                "defense": 3,
+                "dodge": 15
+            },
+            "loot_table": [
+                "offroad_suspension"
+            ]
+        },
+        "heavy_dozer": {
+            "name": "Bulldozer Blindé",
+            "base_stats": {
+                "hp": 70,
+                "attack": 14,
+                "defense": 12,
+                "dodge": 0
+            },
+            "loot_table": [
+                "armored_body"
+            ]
+        },
+        "vintage_hotrod": {
+            "name": "Hot-Rod Ancien",
+            "base_stats": {
+                "hp": 32,
+                "attack": 10,
+                "defense": 4,
+                "dodge": 2
+            },
+            "loot_table": [
+                "drum_brakes"
+            ]
+        },
+        "alpine_coupe": {
+            "name": "Coupé des Alpes",
+            "base_stats": {
+                "hp": 42,
+                "attack": 12,
+                "defense": 5,
+                "dodge": 10
+            },
+            "loot_table": [
+                "sport_suspension"
+            ]
+        },
+        "autobahn_cruiser": {
+            "name": "Berline d'Autoroute",
+            "base_stats": {
+                "hp": 48,
+                "attack": 11,
+                "defense": 7,
+                "dodge": 5
+            },
+            "loot_table": [
+                "disc_brakes"
+            ]
+        },
+        "carbon_supercar": {
+            "name": "Supercar en Carbone",
+            "base_stats": {
+                "hp": 40,
+                "attack": 16,
+                "defense": 3,
+                "dodge": 18
+            },
+            "loot_table": [
+                "lightweight_body"
+            ]
+        },
+        "boss_final": {
+            "name": "LE BOSS FINAL",
+            "base_stats": {
+                "hp": 500,
+                "attack": 60,
+                "defense": 40,
+                "dodge": 5
+            },
+            "loot_table": []
+        }
+    }
+}

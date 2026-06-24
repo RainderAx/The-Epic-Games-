@@ -1,0 +1,14 @@
+{
+  "small_potion": {
+    "name": "Mini Potion de Réparation",
+    "type": "heal",
+    "value": 20,
+    "description": "Restaure 20 PV à la voiture."
+  },
+  "super_potion": {
+    "name": "Super Potion de Réparation",
+    "type": "heal",
+    "value": 50,
+    "description": "Restaure 50 PV à la voiture."
+  }
+}
