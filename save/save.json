@@ -1,14 +1,20 @@
 {
     "name": "Ch\u00e2ssis H\u00e9ro\u00efque",
-    "potions": 4,
+    "potions": 3,
     "equipments": {
         "engine": "v8_engine",
-        "tires": "sport_tires",
-        "driver": null,
+        "tires": null,
+        "driver": "max_verstappen",
         "turbo": "comp_turbo",
         "body": null,
-        "brakes": "disc_brakes",
-        "suspension": "offroad_suspension"
+        "brakes": "drum_brakes",
+        "suspension": null
     },
-    "inventory": []
+    "inventory": [
+        "disc_brakes",
+        "pdfile",
+        "drum_brakes",
+        "disc_brakes",
+        "drum_brakes"
+    ]
 }

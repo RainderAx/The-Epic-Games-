@@ -220,8 +220,10 @@
     ],
     "encounter_rate": 0.15,
     "available_enemies": [
-        "rusty_sedan",
-        "drift_king",
-        "mad_truck"
+        "heavy_dozer",
+        "vintage_hotrod",
+        "alpine_coupe",
+        "autobahn_cruiser",
+        "carbon_supercar"
     ]
 }

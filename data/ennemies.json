@@ -4,8 +4,8 @@
             "name": "Berline Rouillée",
             "base_stats": {
                 "hp": 30,
-                "attack": 8,
-                "defense": 2,
+                "attack": 25,
+                "defense": 10,
                 "dodge": 3
             },
             "loot_table": [
@@ -17,8 +17,8 @@
             "name": "Camion Enragé",
             "base_stats": {
                 "hp": 55,
-                "attack": 15,
-                "defense": 6,
+                "attack": 25,
+                "defense": 10,
                 "dodge": 1
             },
             "loot_table": [
@@ -29,7 +29,7 @@
             "name": "Reine du Drift",
             "base_stats": {
                 "hp": 40,
-                "attack": 10,
+                "attack": 30,
                 "defense": 3,
                 "dodge": 12
             },
@@ -54,7 +54,7 @@
             "name": "Red Bull",
             "base_stats": {
                 "hp": 150,
-                "attack": 40,
+                "attack": 35,
                 "defense": 15,
                 "dodge": 10
             },
