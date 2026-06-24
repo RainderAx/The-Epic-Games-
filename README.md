@@ -38,7 +38,7 @@ pip install pygame
 python main.py
 ```
 
-Commandes du Jeu
+**Commandes du Jeu**
 Dans les Menus (Écran Titre / Inventaires)
 Flèches Directionnelles : Naviguer entre les options.
 
@@ -75,14 +75,16 @@ pyinstaller --noconsole --onefile main.py
 
 ### 3. Intégration des Assets :
 
-dist/
+**Licence**
+```Plaintext
+Ce projet est réalisé dans un but pédagogique et de divertissement. Les assets et codes sources restent modifiables et utilisables librement.dist/
 ├── main.exe
 ├── assets/       <-- À copier/coller ici
 └── data/         <-- À copier/coller ici
-
+```
 
 **Structure du Projet**
-
+```Plaintext
 The-Epic-Games-/
 ├── assets/             # Sprites des véhicules (PNG), UI et arrière-plans
 ├── battle/             # Logique des combats, calculs de dégâts et loots
@@ -94,7 +96,4 @@ The-Epic-Games-/
 ├── world/              # Moteur de la carte, des herbes et des collisions
 ├── main.py             # Point d'entrée principal du jeu
 └── README.md           # Documentation du projet
-
-
-**Licence**
-Ce projet est réalisé dans un but pédagogique et de divertissement. Les assets et codes sources restent modifiables et utilisables librement.
+```
