@@ -19,10 +19,7 @@
         "defense": 10,
         "dodge": 3
       },
-      "loot_table": [
-        "v8_engine",
-        "sport_tires"
-      ]
+      "loot_table": ["v8_engine", "sport_tires"]
     },
     "mad_truck": {
       "name": "Camion Enragé",
@@ -33,9 +30,7 @@
         "defense": 10,
         "dodge": 1
       },
-      "loot_table": [
-        "comp_turbo"
-      ]
+      "loot_table": ["comp_turbo"]
     },
     "drift_king": {
       "name": "Reine du Drift",
@@ -46,9 +41,7 @@
         "defense": 3,
         "dodge": 12
       },
-      "loot_table": [
-        "sport_tires"
-      ]
+      "loot_table": ["sport_tires"]
     },
     "camionette": {
       "name": "Camionnette",
@@ -59,10 +52,7 @@
         "defense": 31,
         "dodge": 5
       },
-      "loot_table": [
-        "pdfile",
-        "armored_body"
-      ]
+      "loot_table": ["pdfile", "armored_body"]
     },
     "redbull": {
       "name": "Red Bull",
@@ -73,13 +63,7 @@
         "defense": 15,
         "dodge": 10
       },
-      "loot_table": [
-        "max_verstappen",
-        "disc_brakes",
-        "sport_suspension",
-        "super_potion",
-        "mini_potion"
-      ]
+      "loot_table": ["max_verstappen", "disc_brakes", "sport_suspension", "super_potion", "mini_potion"]
     },
     "desert_buggy": {
       "name": "Buggy du Désert",
@@ -90,9 +74,7 @@
         "defense": 3,
         "dodge": 15
       },
-      "loot_table": [
-        "offroad_suspension"
-      ]
+      "loot_table": ["offroad_suspension"]
     },
     "heavy_dozer": {
       "name": "Bulldozer Blindé",
@@ -103,9 +85,7 @@
         "defense": 12,
         "dodge": 0
       },
-      "loot_table": [
-        "armored_body"
-      ]
+      "loot_table": ["armored_body"]
     },
     "vintage_hotrod": {
       "name": "Hot-Rod Ancien",
@@ -116,11 +96,7 @@
         "defense": 4,
         "dodge": 2
       },
-      "loot_table": [
-        "drum_brakes",
-        "super_potion",
-        "armored_body"
-      ]
+      "loot_table": ["drum_brakes", "super_potion", "armored_body"]
     },
     "alpine_coupe": {
       "name": "Coupé des Alpes",
@@ -131,11 +107,7 @@
         "defense": 5,
         "dodge": 10
       },
-      "loot_table": [
-        "sport_suspension",
-        "super_potion",
-        "armored_body"
-      ]
+      "loot_table": ["sport_suspension", "super_potion", "armored_body"]
     },
     "autobahn_cruiser": {
       "name": "Berline d'Autoroute",
@@ -146,11 +118,7 @@
         "defense": 7,
         "dodge": 5
       },
-      "loot_table": [
-        "disc_brakes",
-        "super_potion",
-        "armored_body"
-      ]
+      "loot_table": ["disc_brakes", "super_potion", "armored_body"]
     },
     "carbon_supercar": {
       "name": "Supercar en Carbone",
@@ -161,11 +129,18 @@
         "defense": 3,
         "dodge": 18
       },
-      "loot_table": [
-        "lightweight_body",
-        "super_potion",
-        "armored_body"
-      ]
+      "loot_table": ["lightweight_body", "super_potion", "armored_body"]
+    },
+    "boss_final": {
+      "name": "LE BOSS FINAL",
+      "sprite": "assets/ennemies/redbull.png",
+      "base_stats": {
+        "hp": 500,
+        "attack": 60,
+        "defense": 40,
+        "dodge": 5
+      },
+      "loot_table": []
     }
   }
 }

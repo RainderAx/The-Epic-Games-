@@ -17,6 +17,7 @@ class Player(Car):
         self.move_speed = 4
         self.inventory = [] # Liste d'équipements non portés
         self.potions = 0
+        self.money = 100 # Argent initial pour la boutique
         self.direction = "down"
 
     def move(self, dx, dy):
@@ -54,7 +55,9 @@ class Player(Car):
         rect = pygame.Rect(self.pixel_x - camera_offset[0], 
                            self.pixel_y - camera_offset[1], 
                            TILE_SIZE, TILE_SIZE)
-        pygame.draw.rect(surface, (0, 0, 255), rect) # Bleu pour le joueur
+        # On garde le rectangle bleu pour l'instant comme demandé précédemment, 
+        # mais on pourrait blitter McQueenBack.png si on voulait.
+        pygame.draw.rect(surface, (0, 0, 255), rect) 
 
     def add_to_inventory(self, item):
         self.inventory.append(item)

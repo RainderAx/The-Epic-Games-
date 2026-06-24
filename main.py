@@ -19,6 +19,7 @@ from ui.menu import Menu
 from ui.battle_ui import BattleUI
 from ui.inventory_menu import InventoryMenu
 from ui.equipment_menu import EquipmentMenu
+from ui.shop_menu import ShopMenu
 
 class Game:
     def __init__(self):
@@ -86,6 +87,7 @@ class Game:
         self.battle_ui = None
         self.inventory_menu = InventoryMenu(self.screen, self.player)
         self.equipment_menu = EquipmentMenu(self.screen, self.player)
+        self.shop_menu = ShopMenu(self.screen, self.player, self.equipment_data)
         self.save_manager = SaveManager()
 
     def change_map(self, new_map_path):
@@ -101,15 +103,18 @@ class Game:
             self.player.target_x = self.player.grid_x * TILE_SIZE
             self.player.target_y = self.player.grid_y * TILE_SIZE
             self.player.moving = False
-            print(f"Téléportation vers {self.game_map.map_name}")
+            print(f"Transition vers {self.game_map.map_name}")
 
-    def start_battle(self):
-        # Choisir un ennemi au hasard parmi ceux disponibles sur la carte ou dans cars.json
-        available = self.game_map.available_enemies
-        if not available:
-            available = list(self.car_data.get("enemies", {}).keys())
+    def start_battle(self, boss_id=None):
+        # Choisir un ennemi
+        if boss_id:
+            enemy_id = boss_id
+        else:
+            available = self.game_map.available_enemies
+            if not available:
+                available = list(self.car_data.get("enemies", {}).keys())
+            enemy_id = random.choice(available)
             
-        enemy_id = random.choice(available)
         e_data = self.car_data["enemies"].get(enemy_id)
         if not e_data: # Fallback
             e_data = list(self.car_data["enemies"].values())[0]
@@ -165,15 +170,27 @@ class Game:
                             # Vérifier téléportation
                             if self.game_map.check_teleport(new_x, new_y):
                                 if "map1" in self.current_map_file:
-                                    self.change_map('data/maps/map2.json')
-                                elif "map2" in self.current_map_file:
                                     self.change_map('data/maps/map3.json')
+                                elif "map3" in self.current_map_file:
+                                    self.change_map('data/maps/map4.json')
+                                elif "map4" in self.current_map_file:
+                                    self.change_map('data/maps/map5.json')
+                                elif "map5" in self.current_map_file:
+                                    self.change_map('data/maps/map1.json')
+                            
+                            # Vérifier boutique
+                            if self.game_map.check_shop(new_x, new_y):
+                                self.state = GameState.SHOP_MENU
                             
                             # Vérifier rencontre
                             tile = self.game_map.get_tile(self.player.grid_x, self.player.grid_y)
                             if tile and tile.type == TileType.GRASS:
                                 if random.random() <= self.game_map.encounter_rate:
                                     self.start_battle()
+                            
+                            # Boss final si Map 5 et condition spéciale (ex: spawn point atteint)
+                            if "map5" in self.current_map_file and new_x == 7 and new_y == 1:
+                                self.start_battle(boss_id="boss_final")
 
             elif self.state == GameState.BATTLE:
                 action = self.battle_ui.handle_event(event)
@@ -187,22 +204,17 @@ class Game:
                 if self.battle_manager.is_finished:
                     if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
                         if self.battle_manager.winner == "player":
+                            # Argent gagné en combat
+                            self.player.money += random.randint(10, 30)
                             loot = LootSystem.generate_loot(self.battle_manager.enemy, self.equipment_data)
                             if loot:
                                 self.player.add_to_inventory(loot)
                             self.player.potions += LootSystem.generate_potion()
                             self.state = GameState.EXPLORATION
                         else:
-                            # Roguelite: Retour au début de la carte actuelle
+                            # Roguelite: Retour au début
                             self.player.stats.current_hp = self.player.get_active_stats()["max_hp"]
-                            spawn_point = self.game_map.spawn_point
-                            self.player.grid_x = spawn_point["x"]
-                            self.player.grid_y = spawn_point["y"]
-                            self.player.pixel_x = float(self.player.grid_x * TILE_SIZE)
-                            self.player.pixel_y = float(self.player.grid_y * TILE_SIZE)
-                            self.player.target_x = self.player.grid_x * TILE_SIZE
-                            self.player.target_y = self.player.grid_y * TILE_SIZE
-                            self.state = GameState.EXPLORATION
+                            self.change_map('data/maps/map1.json')
 
             elif self.state == GameState.INVENTORY_MENU:
                 res = self.inventory_menu.handle_event(event)
@@ -210,6 +222,10 @@ class Game:
 
             elif self.state == GameState.EQUIPMENT_MENU:
                 res = self.equipment_menu.handle_event(event)
+                if res == "close": self.state = GameState.EXPLORATION
+                
+            elif self.state == GameState.SHOP_MENU:
+                res = self.shop_menu.handle_event(event)
                 if res == "close": self.state = GameState.EXPLORATION
 
     def update(self):
@@ -234,7 +250,7 @@ class Game:
             self.player.draw(self.screen)
             stats = self.player.get_active_stats()
             draw_text(self.screen, f"Carte: {self.game_map.map_name}", 18, 10, 10)
-            draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | Potions: {self.player.potions}", 20, 10, 35)
+            draw_text(self.screen, f"HP: {self.player.stats.current_hp}/{stats['max_hp']} | $: {self.player.money}", 20, 10, 35)
             draw_text(self.screen, "I: Inventaire | E: Équipement | S: Sauvegarder", 18, 10, SCREEN_HEIGHT - 25)
         elif self.state == GameState.BATTLE:
             self.battle_ui.draw()
@@ -244,6 +260,9 @@ class Game:
         elif self.state == GameState.EQUIPMENT_MENU:
             self.game_map.draw(self.screen)
             self.equipment_menu.draw()
+        elif self.state == GameState.SHOP_MENU:
+            self.game_map.draw(self.screen)
+            self.shop_menu.draw()
 
         pygame.display.flip()
 

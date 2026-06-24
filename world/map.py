@@ -28,7 +28,8 @@ class Map:
             TileType.ROAD: "assets/tiles/road.png",
             TileType.GRASS: "assets/tiles/grass.png",
             TileType.OBSTACLE: "assets/tiles/obstacle.png",
-            TileType.TELEPORT: "assets/tiles/teleportation.png"
+            TileType.TELEPORT: "assets/tiles/teleportation.png",
+            TileType.SHOP: "assets/tiles/shop.png"
         }
         
         for tile_type, path in paths.items():
@@ -57,7 +58,7 @@ class Map:
         return None
 
     def load_from_file(self, file_path):
-        """Charge une carte depuis un fichier JSON (compatible avec map1.json)."""
+        """Charge une carte depuis un fichier JSON."""
         data = load_json(file_path)
         if not data:
             return False
@@ -74,7 +75,8 @@ class Map:
             0: TileType.ROAD,
             1: TileType.GRASS,
             2: TileType.OBSTACLE,
-            3: TileType.TELEPORT
+            3: TileType.TELEPORT,
+            4: TileType.SHOP
         }
         
         grid = data.get("grid", [])
@@ -91,11 +93,12 @@ class Map:
         return True
 
     def check_teleport(self, x, y):
-        """Vérifie si la case est un téléporteur."""
         tile = self.get_tile(x, y)
-        if tile and tile.type == TileType.TELEPORT:
-            return True
-        return False
+        return tile and tile.type == TileType.TELEPORT
+
+    def check_shop(self, x, y):
+        tile = self.get_tile(x, y)
+        return tile and tile.type == TileType.SHOP
 
     def draw(self, surface, camera_offset=(0, 0)):
         """Dessine chaque case en lui passant sa texture correspondante."""

@@ -15,6 +15,7 @@ class TileType(Enum):
     OBSTACLE = "obstacle"
     NPC = "npc"
     TELEPORT = "teleport"
+    SHOP = "shop"
 
 class GameState(Enum):
     EXPLORATION = auto()
@@ -22,4 +23,5 @@ class GameState(Enum):
     MENU = auto()
     EQUIPMENT_MENU = auto()
     INVENTORY_MENU = auto()
+    SHOP_MENU = auto()
     GAME_OVER = auto()
