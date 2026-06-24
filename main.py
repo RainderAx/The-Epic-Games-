@@ -170,13 +170,13 @@ class Game:
                             # Vérifier téléportation
                             if self.game_map.check_teleport(new_x, new_y):
                                 if "map1" in self.current_map_file:
+                                    self.change_map('data/maps/map2.json')
+                                elif "map2" in self.current_map_file:
                                     self.change_map('data/maps/map3.json')
                                 elif "map3" in self.current_map_file:
                                     self.change_map('data/maps/map4.json')
                                 elif "map4" in self.current_map_file:
                                     self.change_map('data/maps/map5.json')
-                                elif "map5" in self.current_map_file:
-                                    self.change_map('data/maps/map1.json')
                             
                             # Vérifier boutique
                             if self.game_map.check_shop(new_x, new_y):

@@ -137,6 +137,16 @@
             "loot_table": [
                 "lightweight_body"
             ]
+        },
+        "boss_final": {
+            "name": "LE BOSS FINAL",
+            "base_stats": {
+                "hp": 500,
+                "attack": 60,
+                "defense": 40,
+                "dodge": 5
+            },
+            "loot_table": []
         }
     }
 }
